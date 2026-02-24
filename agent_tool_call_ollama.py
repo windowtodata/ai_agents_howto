@@ -6,7 +6,7 @@ from smolagents import LiteLLMModel
 
 
 # Set Paramters:
-local_model = LiteLLMModel(model_id="ollama_chat/qwen2.5:7b", temperature=0.2,
+local_model = LiteLLMModel(model_id="ollama_chat/llama3.1:8b", temperature=0.2,
                       max_tokens=100, requests_per_minute=60)
 
 # Define Tools
@@ -98,7 +98,7 @@ def update_memory(conversation_history, user_input, response):
     })
     return updated_history
 
-def query_claude(user_input, conversation_history=[]):
+def query_ollama(user_input, conversation_history=[]):
     # System message for tool selection and general conversation
     system_message = (
         "You're a helpful personal assistant. Based on the user's message, "
@@ -162,5 +162,5 @@ while True:
     if user_input.lower() == "quit":
         print("Agent: Goodbye!")
         break
-    response, conversation_history = query_claude(user_input, conversation_history)
+    response, conversation_history = query_ollama(user_input, conversation_history)
     print("Agent:", response)
