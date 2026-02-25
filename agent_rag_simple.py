@@ -158,9 +158,7 @@ if __name__ == "__main__":
         if query.lower() == "quit":
             print("Agent: Goodbye!")
             break
-        for step in agent.invoke(
+        response = agent.invoke(
             {"messages": [{"role": "user", "content": query}]},
-            {"configurable": {"thread_id": "1"}},
-            stream_mode="values",
-        ):
-            step["messages"][-1].pretty_print()
+            {"configurable": {"thread_id": "1"}})
+        print("Agent:", response["messages"][-1].content)
