@@ -11,6 +11,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import ChatOllama
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langgraph.checkpoint.memory import InMemorySaver
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -149,7 +150,7 @@ if __name__ == "__main__":
         "You have access to a tool that retrieves context from a blog post. "
         "Use the tool to help answer user queries."
     )
-    agent = create_agent(model, tools, system_prompt=prompt)
+    agent = create_agent(model, tools, system_prompt=prompt, checkpointer=InMemorySaver())
 
     # ---- chat loop ----
     while True:
@@ -159,6 +160,7 @@ if __name__ == "__main__":
             break
         for step in agent.stream(
             {"messages": [{"role": "user", "content": query}]},
+            {"configurable": {"thread_id": "1"}},
             stream_mode="values",
         ):
             step["messages"][-1].pretty_print()
